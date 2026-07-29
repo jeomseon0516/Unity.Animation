@@ -1,5 +1,9 @@
 # 변경 기록
 
+## [0.1.1] - 2026-07-29
+
+- Animation Event 라우팅을 확인하는 `Basic Usage` 샘플을 추가했습니다.
+
 ## [Unreleased]
 
 - TODO(api): Animation Event 직접 호출과 StateMachineBehaviour 기반 이벤트 전달 중 유지보수성과 타입 안정성이 높은 방식을 비교합니다.

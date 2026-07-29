@@ -1,0 +1,6 @@
+{
+  "name": "Jeomseon.Unity.Animation.Samples.BasicUsage",
+  "references": [
+    "Jeomseon.Unity.Animation"
+  ]
+}
