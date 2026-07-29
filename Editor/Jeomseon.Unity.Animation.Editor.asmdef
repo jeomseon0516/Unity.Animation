@@ -1,0 +1,13 @@
+{
+  "name": "Jeomseon.Unity.Animation.Editor",
+  "rootNamespace": "Jeomseon",
+  "references": [
+    "Jeomseon.Unity.Animation",
+    "UnityEngine.AnimationModule"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

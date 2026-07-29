@@ -1,0 +1,9 @@
+{
+  "name": "Jeomseon.Unity.Animation",
+  "rootNamespace": "Jeomseon",
+  "references": [
+    "UnityEngine.AnimationModule"
+  ],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}
