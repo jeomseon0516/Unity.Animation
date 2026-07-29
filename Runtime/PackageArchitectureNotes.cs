@@ -1,4 +1,4 @@
-namespace Jeomseon.PackageNotes
+namespace Jeomseon.Animation
 {
     internal static class PackageArchitectureNotes
     {

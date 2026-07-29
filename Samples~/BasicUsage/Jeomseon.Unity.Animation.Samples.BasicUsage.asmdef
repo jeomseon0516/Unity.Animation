@@ -1,5 +1,6 @@
 {
   "name": "Jeomseon.Unity.Animation.Samples.BasicUsage",
+  "rootNamespace": "Jeomseon.Samples.Animation",
   "references": [
     "Jeomseon.Unity.Animation"
   ]

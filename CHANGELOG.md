@@ -1,5 +1,9 @@
 # 변경 기록
 
+## [0.1.2] - 2026-07-29
+
+- Runtime·Editor·Samples 어셈블리의 `rootNamespace`와 소스 파일 위치를 namespace에 맞게 정리했습니다.
+
 ## [0.1.1] - 2026-07-29
 
 - Animation Event 라우팅을 확인하는 `Basic Usage` 샘플을 추가했습니다.

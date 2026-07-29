@@ -1,6 +1,6 @@
 {
   "name": "Jeomseon.Unity.Animation.Editor",
-  "rootNamespace": "Jeomseon",
+  "rootNamespace": "Jeomseon.Animation.Editor",
   "references": [
     "Jeomseon.Unity.Animation",
     "UnityEngine.AnimationModule"
