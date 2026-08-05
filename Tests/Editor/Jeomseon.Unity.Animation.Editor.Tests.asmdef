@@ -1,0 +1,16 @@
+{
+  "name": "Jeomseon.Unity.Animation.Editor.Tests",
+  "rootNamespace": "Jeomseon.Animation.Editor.Tests",
+  "references": [
+    "Jeomseon.Unity.Animation",
+    "Jeomseon.Unity.Animation.Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

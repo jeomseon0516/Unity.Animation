@@ -1,52 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
+using Jeomseon.Animation.Channels;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Jeomseon.Animation
 {
+    /// <summary>
+    /// Relays Unity Animation Events to the channel stored in their object parameter.
+    /// Unity Animation Events require a method name, so editor tooling owns that convention.
+    /// </summary>
     [DisallowMultipleComponent]
-    public class AnimationEventReceiver : MonoBehaviour
+    public sealed class AnimationEventReceiver : MonoBehaviour
     {
-        [SerializeField] private UnityEvent<AnimationEvent> _animationEventReceived = new();
+        internal const string RelayFunctionName = nameof(ReceiveAnimationEvent);
 
-        private bool _isInitialized = false;
-        private readonly Dictionary<string, UnityAction<AnimationEvent>> _routes = new();
-
-        public event UnityAction<AnimationEvent> AnimationEventReceived
+        /// <summary>
+        /// Called by Unity Animation Events configured by the channel authoring tool.
+        /// Do not call or configure this method manually in normal usage.
+        /// </summary>
+        /// <param name="animationEvent">The Animation Event emitted by Unity.</param>
+        public void ReceiveAnimationEvent(AnimationEvent animationEvent)
         {
-            add => _animationEventReceived.AddListener(value);
-            remove => _animationEventReceived.RemoveListener(value);
-        }
-
-        public void ReceiveAnimationEvent(AnimationEvent evt)
-        {
-            _animationEventReceived.Invoke(evt);
-        }
-
-        public void Register(string key, UnityAction<AnimationEvent> handler)
-        {
-            initialize();
-            _routes[key] = handler;
-        }
-        public void Unregister(string key) => _routes.Remove(key);
-
-        private void Awake()
-        {
-            initialize();
-        }
-
-        private void initialize()
-        {
-            if (_isInitialized) return;
-
-            AnimationEventReceived += evt =>
+            if (animationEvent.objectReferenceParameter is not AnimationEventChannel channel)
             {
-                if (!string.IsNullOrEmpty(evt.stringParameter) && _routes.TryGetValue(evt.stringParameter, out var h))
-                    h?.Invoke(evt);
-            };
+                Debug.LogWarning(
+                    $"[{nameof(AnimationEventReceiver)}] Animation Event에 " +
+                    $"{nameof(AnimationEventChannel)}이 연결되어 있지 않습니다.",
+                    this);
+                return;
+            }
 
-            _isInitialized = true;
+            channel.Raise(animationEvent);
         }
     }
 }
