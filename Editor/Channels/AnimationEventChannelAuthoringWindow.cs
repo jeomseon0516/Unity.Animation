@@ -5,6 +5,7 @@ using Jeomseon.Animation.Channels;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jeomseon.Animation.Editor.Channels
 {
@@ -15,9 +16,9 @@ namespace Jeomseon.Animation.Editor.Channels
         private const string DefaultChannelFolder = "Assets/AnimationEventChannels";
         private const string DefaultDerivedClipFolder = "Assets/AnimationEventClips";
 
-        [SerializeField] private DefaultAsset _channelFolder;
-        [SerializeField] private DefaultAsset _derivedClipFolder;
-        [SerializeField] private bool _includeInactiveChildren = true;
+        [SerializeField, FormerlySerializedAs("_channelFolder")] private DefaultAsset channelFolder;
+        [SerializeField, FormerlySerializedAs("_derivedClipFolder")] private DefaultAsset derivedClipFolder;
+        [SerializeField, FormerlySerializedAs("_includeInactiveChildren")] private bool includeInactiveChildren = true;
         private Vector2 _scrollPosition;
 
         [MenuItem("Tool/Animation/Event Channel Authoring")]
@@ -36,21 +37,21 @@ namespace Jeomseon.Animation.Editor.Channels
                 "런타임 릴레이 함수명과 Object Parameter 규약을 직접 설정할 필요가 없습니다.",
                 MessageType.Info);
 
-            _channelFolder = (DefaultAsset)EditorGUILayout.ObjectField(
+            channelFolder = (DefaultAsset)EditorGUILayout.ObjectField(
                 "Channel Folder",
-                _channelFolder,
+                channelFolder,
                 typeof(DefaultAsset),
                 false);
-            _derivedClipFolder = (DefaultAsset)EditorGUILayout.ObjectField(
+            derivedClipFolder = (DefaultAsset)EditorGUILayout.ObjectField(
                 "Derived Clip Folder",
-                _derivedClipFolder,
+                derivedClipFolder,
                 typeof(DefaultAsset),
                 false);
-            _includeInactiveChildren = EditorGUILayout.Toggle(
+            includeInactiveChildren = EditorGUILayout.Toggle(
                 "Include Inactive Children",
-                _includeInactiveChildren);
+                includeInactiveChildren);
 
-            IReadOnlyList<AnimationClip> clips = GatherSelectedClips(_includeInactiveChildren);
+            IReadOnlyList<AnimationClip> clips = GatherSelectedClips(includeInactiveChildren);
             ImportedAnimationClipConversionMap map = ImportedAnimationClipWorkflow.LoadMap(
                 GetDerivedClipFolderPath());
             DrawPreview(clips, map);
@@ -71,7 +72,7 @@ namespace Jeomseon.Animation.Editor.Channels
 
         private void ExtractImportedClips(IReadOnlyList<AnimationClip> clips)
         {
-            string channelFolder = ResolveChannelFolder();
+            string channelFolderPath = ResolveChannelFolder();
             string derivedFolder = ResolveDerivedClipFolder();
             ImportedAnimationClipConversionMap map = ImportedAnimationClipWorkflow.LoadOrCreateMap(derivedFolder);
             int extractedClips = 0;
@@ -84,7 +85,7 @@ namespace Jeomseon.Animation.Editor.Channels
                 ImportedAnimationClipWorkflow.ExtractionResult result = ImportedAnimationClipWorkflow.ExtractOrUpdate(
                     clip,
                     derivedFolder,
-                    functionName => LoadOrCreateChannel(channelFolder, functionName),
+                    functionName => LoadOrCreateChannel(channelFolderPath, functionName),
                     map);
                 extractedClips += result.Created ? 1 : 0;
                 updatedClips += result.Created ? 0 : 1;
@@ -92,7 +93,7 @@ namespace Jeomseon.Animation.Editor.Channels
                 invalidEvents += result.InvalidEvents;
             }
 
-            IReadOnlyList<RuntimeAnimatorController> controllers = GatherSelectedControllers(_includeInactiveChildren)
+            IReadOnlyList<RuntimeAnimatorController> controllers = GatherSelectedControllers(includeInactiveChildren)
                 .Where(controller => ImportedAnimationClipWorkflow.HasReplacement(controller, map.Entries))
                 .ToArray();
             foreach (RuntimeAnimatorController controller in controllers)
@@ -162,7 +163,7 @@ namespace Jeomseon.Animation.Editor.Channels
         private void Convert(IReadOnlyList<AnimationClip> clips)
         {
             string folder = ResolveChannelFolder();
-            int addedReceivers = AddMissingReceiversToSelectedHierarchies(_includeInactiveChildren);
+            int addedReceivers = AddMissingReceiversToSelectedHierarchies(includeInactiveChildren);
             BatchMigrationResult result = ConvertClips(
                 clips,
                 clip =>
@@ -268,9 +269,9 @@ namespace Jeomseon.Animation.Editor.Channels
 
         private string ResolveChannelFolder()
         {
-            string folder = _channelFolder == null
+            string folder = channelFolder == null
                 ? DefaultChannelFolder
-                : AssetDatabase.GetAssetPath(_channelFolder);
+                : AssetDatabase.GetAssetPath(channelFolder);
 
             if (!AssetDatabase.IsValidFolder(folder))
             {
@@ -290,9 +291,9 @@ namespace Jeomseon.Animation.Editor.Channels
 
         private string GetDerivedClipFolderPath()
         {
-            string folder = _derivedClipFolder == null
+            string folder = derivedClipFolder == null
                 ? DefaultDerivedClipFolder
-                : AssetDatabase.GetAssetPath(_derivedClipFolder);
+                : AssetDatabase.GetAssetPath(derivedClipFolder);
             return AssetDatabase.IsValidFolder(folder) ? folder : DefaultDerivedClipFolder;
         }
 

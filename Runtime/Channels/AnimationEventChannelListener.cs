@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Jeomseon.Animation.Channels
 {
@@ -10,8 +11,8 @@ namespace Jeomseon.Animation.Channels
     [AddComponentMenu("Jeomseon/Animation/Animation Event Channel Listener")]
     public sealed class AnimationEventChannelListener : MonoBehaviour
     {
-        [SerializeField] private AnimationEventChannel _channel;
-        [SerializeField] private UnityEvent<AnimationEvent> _response = new();
+        [SerializeField, FormerlySerializedAs("_channel")] private AnimationEventChannel channel;
+        [SerializeField, FormerlySerializedAs("_response")] private UnityEvent<AnimationEvent> response = new();
 
         /// <summary>
         /// Gets or changes the observed channel while preserving subscription state.
@@ -19,24 +20,24 @@ namespace Jeomseon.Animation.Channels
         /// </summary>
         public AnimationEventChannel Channel
         {
-            get => _channel;
+            get => channel;
             set
             {
-                if (_channel == value)
+                if (channel == value)
                 {
                     return;
                 }
 
-                if (isActiveAndEnabled && _channel != null)
+                if (isActiveAndEnabled && channel != null)
                 {
-                    _channel.Raised -= OnRaised;
+                    channel.Raised -= OnRaised;
                 }
 
-                _channel = value;
+                channel = value;
 
-                if (isActiveAndEnabled && _channel != null)
+                if (isActiveAndEnabled && channel != null)
                 {
-                    _channel.Raised += OnRaised;
+                    channel.Raised += OnRaised;
                 }
             }
         }
@@ -47,29 +48,29 @@ namespace Jeomseon.Animation.Channels
         /// </summary>
         public event UnityAction<AnimationEvent> Responded
         {
-            add => _response.AddListener(value);
-            remove => _response.RemoveListener(value);
+            add => response.AddListener(value);
+            remove => response.RemoveListener(value);
         }
 
         private void OnEnable()
         {
-            if (_channel != null)
+            if (channel != null)
             {
-                _channel.Raised += OnRaised;
+                channel.Raised += OnRaised;
             }
         }
 
         private void OnDisable()
         {
-            if (_channel != null)
+            if (channel != null)
             {
-                _channel.Raised -= OnRaised;
+                channel.Raised -= OnRaised;
             }
         }
 
         private void OnRaised(AnimationEvent animationEvent)
         {
-            _response.Invoke(animationEvent);
+            response.Invoke(animationEvent);
         }
     }
 }

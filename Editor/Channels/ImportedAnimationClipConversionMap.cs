@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jeomseon.Animation.Editor.Channels
 {
     public sealed class ImportedAnimationClipConversionMap : ScriptableObject
     {
-        [SerializeField] private List<Entry> _entries = new();
+        [SerializeField, FormerlySerializedAs("_entries")] private List<Entry> entries = new();
 
-        internal IReadOnlyList<Entry> Entries => _entries;
+        internal IReadOnlyList<Entry> Entries => entries;
 
         internal Entry Find(string sourceGuid, long sourceLocalId)
         {
-            return _entries.Find(entry =>
+            return entries.Find(entry =>
                 entry.SourceGuid == sourceGuid && entry.SourceLocalId == sourceLocalId);
         }
 
@@ -27,7 +28,7 @@ namespace Jeomseon.Animation.Editor.Channels
             if (entry == null)
             {
                 entry = new Entry();
-                _entries.Add(entry);
+                entries.Add(entry);
             }
 
             entry.Set(sourceGuid, sourceLocalId, sourceDependencyHash, sourceClip, derivedClip);
@@ -37,17 +38,17 @@ namespace Jeomseon.Animation.Editor.Channels
         [Serializable]
         internal sealed class Entry
         {
-            [SerializeField] private string _sourceGuid;
-            [SerializeField] private long _sourceLocalId;
-            [SerializeField] private string _sourceDependencyHash;
-            [SerializeField] private AnimationClip _sourceClip;
-            [SerializeField] private AnimationClip _derivedClip;
+            [SerializeField, FormerlySerializedAs("_sourceGuid")] private string sourceGuid;
+            [SerializeField, FormerlySerializedAs("_sourceLocalId")] private long sourceLocalId;
+            [SerializeField, FormerlySerializedAs("_sourceDependencyHash")] private string sourceDependencyHash;
+            [SerializeField, FormerlySerializedAs("_sourceClip")] private AnimationClip sourceClip;
+            [SerializeField, FormerlySerializedAs("_derivedClip")] private AnimationClip derivedClip;
 
-            internal string SourceGuid => _sourceGuid;
-            internal long SourceLocalId => _sourceLocalId;
-            internal string SourceDependencyHash => _sourceDependencyHash;
-            internal AnimationClip SourceClip => _sourceClip;
-            internal AnimationClip DerivedClip => _derivedClip;
+            internal string SourceGuid => sourceGuid;
+            internal long SourceLocalId => sourceLocalId;
+            internal string SourceDependencyHash => sourceDependencyHash;
+            internal AnimationClip SourceClip => sourceClip;
+            internal AnimationClip DerivedClip => derivedClip;
 
             internal void Set(
                 string sourceGuid,
@@ -56,11 +57,11 @@ namespace Jeomseon.Animation.Editor.Channels
                 AnimationClip sourceClip,
                 AnimationClip derivedClip)
             {
-                _sourceGuid = sourceGuid;
-                _sourceLocalId = sourceLocalId;
-                _sourceDependencyHash = sourceDependencyHash;
-                _sourceClip = sourceClip;
-                _derivedClip = derivedClip;
+                this.sourceGuid = sourceGuid;
+                this.sourceLocalId = sourceLocalId;
+                this.sourceDependencyHash = sourceDependencyHash;
+                this.sourceClip = sourceClip;
+                this.derivedClip = derivedClip;
             }
         }
     }
