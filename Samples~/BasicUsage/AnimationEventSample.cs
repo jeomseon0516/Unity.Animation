@@ -1,5 +1,7 @@
+using Jeomseon.Animation;
 using Jeomseon.Animation.Channels;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jeomseon.Samples.Animation
 {
@@ -10,21 +12,21 @@ namespace Jeomseon.Samples.Animation
     [RequireComponent(typeof(AnimationEventReceiver))]
     public sealed class AnimationEventSample : MonoBehaviour
     {
-        [SerializeField] private AnimationEventChannel _footstepChannel;
+        [SerializeField, FormerlySerializedAs("_footstepChannel")] private AnimationEventChannel footstepChannel;
 
         private void OnEnable()
         {
-            if (_footstepChannel != null)
+            if (footstepChannel != null)
             {
-                _footstepChannel.Raised += OnFootstep;
+                footstepChannel.Raised += OnFootstep;
             }
         }
 
         private void OnDisable()
         {
-            if (_footstepChannel != null)
+            if (footstepChannel != null)
             {
-                _footstepChannel.Raised -= OnFootstep;
+                footstepChannel.Raised -= OnFootstep;
             }
         }
 
