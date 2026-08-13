@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Jeomseon.Animation.Editor.Channels
+namespace Jeomseon.Unity.Animation.Editor.Channels
 {
     public sealed class ImportedAnimationClipConversionMap : ScriptableObject
     {

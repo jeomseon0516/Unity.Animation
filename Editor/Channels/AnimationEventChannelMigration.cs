@@ -1,9 +1,9 @@
 using System;
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEditor;
 using UnityEngine;
 
-namespace Jeomseon.Animation.Editor.Channels
+namespace Jeomseon.Unity.Animation.Editor.Channels
 {
     internal static class AnimationEventChannelMigration
     {

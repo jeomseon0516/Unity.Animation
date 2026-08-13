@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Jeomseon.Animation.Channels
+namespace Jeomseon.Unity.Animation.Channels
 {
     /// <summary>
     /// Connects an Animation Event channel to an Inspector-configurable UnityEvent.

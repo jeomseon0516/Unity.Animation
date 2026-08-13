@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Jeomseon.Animation.Channels
+namespace Jeomseon.Unity.Animation.Channels
 {
     /// <summary>
     /// Identifies an Animation Event and broadcasts it without a string routing key.

@@ -1,6 +1,6 @@
 {
   "name": "Jeomseon.Unity.Animation",
-  "rootNamespace": "Jeomseon.Animation",
+  "rootNamespace": "Jeomseon.Unity.Animation",
   "references": [
     "UnityEngine.AnimationModule"
   ],

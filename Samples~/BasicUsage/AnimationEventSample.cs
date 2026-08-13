@@ -1,5 +1,5 @@
-using Jeomseon.Animation;
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEngine;
 using UnityEngine.Serialization;
 

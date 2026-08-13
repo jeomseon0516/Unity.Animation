@@ -1,4 +1,4 @@
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
