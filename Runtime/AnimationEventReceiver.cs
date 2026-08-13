@@ -1,7 +1,7 @@
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEngine;
 
-namespace Jeomseon.Animation
+namespace Jeomseon.Unity.Animation
 {
     /// <summary>
     /// Relays Unity Animation Events to the channel stored in their object parameter.

@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Jeomseon.Animation.Editor.Channels
+namespace Jeomseon.Unity.Animation.Editor.Channels
 {
     using LegacyAnimation = UnityEngine.Animation;
 
@@ -21,7 +21,7 @@ namespace Jeomseon.Animation.Editor.Channels
         [SerializeField, FormerlySerializedAs("_includeInactiveChildren")] private bool includeInactiveChildren = true;
         private Vector2 _scrollPosition;
 
-        [MenuItem("Tool/Animation/Event Channel Authoring")]
+        [MenuItem("Jeomseon/Tool/Animation/Event Channel Authoring")]
         public static void Open()
         {
             AnimationEventChannelAuthoringWindow window =

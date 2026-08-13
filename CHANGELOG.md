@@ -1,6 +1,12 @@
 # 변경 기록
 
-## [Unreleased]
+## [0.3.0] - 2026-08-13
+
+- **(Breaking)** Runtime/Editor 네임스페이스를 패키지 및 경로 규칙에 맞춰
+  `Jeomseon.Unity.Animation`과 `Jeomseon.Unity.Animation.Editor`로 변경했습니다. 이전
+  네임스페이스 호환 별칭은 제공하지 않습니다.
+- 직렬화 필드와 일반 private 필드의 명명 규칙을 재검증하고, Editor 메뉴 경로를
+  `Jeomseon/Tool/Animation/...` 아래로 통일했습니다.
 
 ## [0.2.2] - 2026-08-11
 

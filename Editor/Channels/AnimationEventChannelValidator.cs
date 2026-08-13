@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEditor;
 using UnityEngine;
 
-namespace Jeomseon.Animation.Editor.Channels
+namespace Jeomseon.Unity.Animation.Editor.Channels
 {
     using LegacyAnimation = UnityEngine.Animation;
 
     internal static class AnimationEventChannelValidator
     {
-        [MenuItem("Tool/Animation/Validate Selected Event Channels")]
+        [MenuItem("Jeomseon/Tool/Animation/Validate Selected Event Channels")]
         private static void ValidateSelection()
         {
             IReadOnlyList<AnimationClip> clips =

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Jeomseon.Animation.Channels;
+using Jeomseon.Unity.Animation.Channels;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace Jeomseon.Animation.Editor.Channels
+namespace Jeomseon.Unity.Animation.Editor.Channels
 {
     internal static class ImportedAnimationClipWorkflow
     {
