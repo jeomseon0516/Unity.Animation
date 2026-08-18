@@ -2,6 +2,12 @@
 
 우선순위: `P0` 결함·안전성 → `P1` 핵심 구조 → `P2` 도구 안정성 → `P3` 장기 확장
 
+## 테스트 모드 정리 (2026-08-18, Unity 검증 대기)
+
+- `Tests/Runtime` asmdef의 잘못된 Editor 제한을 제거했습니다.
+- 직접 메서드 호출 단위 테스트에 더해 실제 legacy AnimationClip 재생이 AnimationEvent를
+  `AnimationEventChannel`로 전달하는 PlayMode 테스트를 추가했습니다.
+
 ## 완료
 
 - 문자열 키 라우팅을 `AnimationEventChannel` ScriptableObject 계약으로 교체
