@@ -3,12 +3,33 @@
 Unity Animation Event를 문자열 키가 아닌 `AnimationEventChannel` 에셋으로 라우팅하는 패키지입니다.
 Editor 도구가 Unity 내부 릴레이 규약을 자동 설정하므로 사용자는 채널만 생성·구독하면 됩니다.
 
-## 설치
+## OpenUPM으로 설치
 
-Package Manager의 **Add package from git URL**에서 다음 주소를 사용합니다.
+프로젝트의 `Packages/manifest.json`에 OpenUPM scoped registry를 한 번 등록합니다.
+
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "OpenUPM",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.jeomseon"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.jeomseon.unity.animation": "0.3.1"
+  }
+}
+```
+
+## Git URL로 설치
+
+Unity Package Manager의 `Install package from git URL`에 다음 주소를 사용합니다.
 
 ```text
-https://github.com/jeomseon0516/Unity.Animation.git#v0.2.0
+https://github.com/jeomseon0516/Unity.Animation.git#v0.3.1
 ```
 
 ## 권장 워크플로우
