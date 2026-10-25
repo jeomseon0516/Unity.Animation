@@ -6,7 +6,7 @@
 ## 확인 절차
 
 1. `AnimationEventSample.unity`를 엽니다.
-2. `Tool > Animation > Event Channel Authoring`을 엽니다.
+2. `Jeomseon > Tool > Animation > Event Channel Authoring`을 엽니다.
 3. AnimationClip, AnimatorController 또는 Animator가 있는 GameObject를 선택합니다.
 4. 변환 버튼을 누르면 기존 Animation Event 함수명별 채널 에셋이 생성되고 자동 연결됩니다.
 5. Scene의 `Animation Event Sample` GameObject에 위에서 생성한 채널을 재생하려는 Animator·Animation
