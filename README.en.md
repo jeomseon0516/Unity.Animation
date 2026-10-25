@@ -4,6 +4,10 @@
 
 Represents Animation Event meaning with ScriptableObject channels and automates clip relay configuration in the Editor. Unity's function-name dispatch remains inside the relay.
 
+![Authoring and runtime event dispatch](Documentation~/Images/usage-flow.svg)
+
+The Receiver centralizes clip function-name dispatch while channel references express game meaning. Choose the scope of shared-channel events in the project.
+
 ## Quick start
 
 Author meaningful events, convert with the authoring tool, receive on the playing object, and subscribe to channel Raised. Pair subscriptions in OnEnable/OnDisable.
@@ -151,6 +155,13 @@ When GameObjects are selected, missing `AnimationEventReceiver` components are a
 Use `Jeomseon > Tool > Animation > Validate Selected Event Channels` to find legacy or incomplete events, duplicate events that
 reference the same channel at the same time, and selected Animator/Animation GameObjects that play channel events without
 an `AnimationEventReceiver`. Diagnostics include clip names, event times and hierarchy paths.
+
+## Verify the behavior
+
+1. Import Basic Usage and convert a Clip/Controller containing events with Event Channel Authoring.
+2. Check that the playing GameObject has a Receiver and that the sample references the converted channel.
+3. Play the clip and inspect the received-event log at the event time. Check that disabling the code subscriber removes its subscription.
+4. After reimporting an FBX source, check the derived clip for refresh required and explicitly refresh it.
 
 ## Samples
 

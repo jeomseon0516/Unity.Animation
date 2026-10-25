@@ -4,6 +4,10 @@
 
 Animation Event의 의미를 ScriptableObject 채널로 표현하고, Editor에서 클립의 릴레이 설정을 자동 구성합니다. Unity 자체의 함수명 호출은 내부 릴레이에 남습니다.
 
+![Authoring and runtime event dispatch](Documentation~/Images/usage-flow.svg)
+
+클립의 함수명 호출은 Receiver에 모으고 게임의 의미는 채널 참조로 연결합니다. 공유 채널의 이벤트 범위는 프로젝트에서 정합니다.
+
 ## 빠르게 시작하기
 
 의미 있는 Animation Event 작성 → Authoring 도구에서 채널 변환 → 재생 객체의 Receiver → 채널 Raised 구독. OnEnable/OnDisable에서 구독·해제를 대칭으로 처리합니다.
@@ -222,6 +226,13 @@ public sealed class IntAnimationEventChannel : AnimationEventChannel
 GameObject 경로와 관련 클립명을 표시합니다.
 
 문자열 `Register`/`Unregister` 라우팅 API는 제공하지 않습니다.
+
+## 동작 확인
+
+1. Basic Usage를 Import하고 Event가 있는 Clip/Controller를 Event Channel Authoring에서 변환합니다.
+2. 재생 GameObject에 Receiver가 있고 샘플의 채널 필드가 변환된 채널을 가리키는지 확인합니다.
+3. Play에서 클립을 재생해 이벤트 시점의 수신 로그를 확인합니다. 비활성화 후 코드 구독이 해제되는지도 확인합니다.
+4. FBX 원본을 재임포트했다면 파생 클립의 refresh required 상태를 확인하고 명시적으로 갱신합니다.
 
 ## 샘플 실행
 
