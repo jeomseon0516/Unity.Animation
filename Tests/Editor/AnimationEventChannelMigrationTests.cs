@@ -1,3 +1,4 @@
+using Jeomseon.Unity.Animation;
 using Jeomseon.Unity.Animation.Channels;
 using Jeomseon.Unity.Animation.Editor.Channels;
 using NUnit.Framework;

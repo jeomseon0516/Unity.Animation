@@ -4,8 +4,10 @@ using System.Linq;
 using Jeomseon.Unity.Animation.Channels;
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 namespace Jeomseon.Unity.Animation.Editor.Channels
 {
@@ -21,6 +23,11 @@ namespace Jeomseon.Unity.Animation.Editor.Channels
         [SerializeField, FormerlySerializedAs("_includeInactiveChildren")] private bool includeInactiveChildren = true;
         private Vector2 _scrollPosition;
 
+        private Label _previewTitle;
+        private ScrollView _previewScrollView;
+        private Button _convertButton;
+        private Button _extractButton;
+
         [MenuItem("Jeomseon/Tool/Animation/Event Channel Authoring")]
         public static void Open()
         {
@@ -29,45 +36,132 @@ namespace Jeomseon.Unity.Animation.Editor.Channels
             window.minSize = new Vector2(520f, 320f);
         }
 
-        private void OnGUI()
+        private void CreateGUI()
         {
-            EditorGUILayout.LabelField("Animation Event Channel Authoring", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox(
+            VisualElement root = rootVisualElement;
+
+            Label title = new("Animation Event Channel Authoring");
+            title.style.unityFontStyleAndWeight = FontStyle.Bold;
+            root.Add(title);
+            root.Add(new HelpBox(
                 "선택한 클립의 기존 함수명별로 채널 에셋을 만들고 Animation Event에 자동 연결합니다. " +
                 "런타임 릴레이 함수명과 Object Parameter 규약을 직접 설정할 필요가 없습니다.",
-                MessageType.Info);
+                HelpBoxMessageType.Info));
 
-            channelFolder = (DefaultAsset)EditorGUILayout.ObjectField(
-                "Channel Folder",
-                channelFolder,
-                typeof(DefaultAsset),
-                false);
-            derivedClipFolder = (DefaultAsset)EditorGUILayout.ObjectField(
-                "Derived Clip Folder",
-                derivedClipFolder,
-                typeof(DefaultAsset),
-                false);
-            includeInactiveChildren = EditorGUILayout.Toggle(
-                "Include Inactive Children",
-                includeInactiveChildren);
+            ObjectField channelFolderField = new("Channel Folder")
+            {
+                objectType = typeof(DefaultAsset),
+                allowSceneObjects = false,
+                value = channelFolder
+            };
+            channelFolderField.RegisterValueChangedCallback(evt =>
+            {
+                channelFolder = evt.newValue as DefaultAsset;
+                RefreshPreview();
+            });
+            root.Add(channelFolderField);
+
+            ObjectField derivedClipFolderField = new("Derived Clip Folder")
+            {
+                objectType = typeof(DefaultAsset),
+                allowSceneObjects = false,
+                value = derivedClipFolder
+            };
+            derivedClipFolderField.RegisterValueChangedCallback(evt =>
+            {
+                derivedClipFolder = evt.newValue as DefaultAsset;
+                RefreshPreview();
+            });
+            root.Add(derivedClipFolderField);
+
+            Toggle includeInactiveChildrenField = new("Include Inactive Children")
+            {
+                value = includeInactiveChildren
+            };
+            includeInactiveChildrenField.RegisterValueChangedCallback(evt =>
+            {
+                includeInactiveChildren = evt.newValue;
+                RefreshPreview();
+            });
+            root.Add(includeInactiveChildrenField);
+
+            _previewTitle = new Label();
+            _previewTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
+            _previewTitle.style.marginTop = 6f;
+            root.Add(_previewTitle);
+
+            _previewScrollView = new ScrollView(ScrollViewMode.Vertical);
+            _previewScrollView.style.flexGrow = 1f;
+            _previewScrollView.verticalScroller.valueChanged +=
+                _ => _scrollPosition = _previewScrollView.scrollOffset;
+            _previewScrollView.horizontalScroller.valueChanged +=
+                _ => _scrollPosition = _previewScrollView.scrollOffset;
+            root.Add(_previewScrollView);
+
+            _convertButton = new Button(() =>
+            {
+                Convert(GatherSelectedClips(includeInactiveChildren));
+                RefreshPreview();
+            })
+            {
+                text = "Convert Selected Events To Channels"
+            };
+            _convertButton.style.height = 34f;
+            root.Add(_convertButton);
+
+            _extractButton = new Button(() =>
+            {
+                ExtractImportedClips(GatherSelectedClips(includeInactiveChildren));
+                RefreshPreview();
+            })
+            {
+                text = "Extract Imported Clips And Create Overrides"
+            };
+            _extractButton.style.height = 34f;
+            root.Add(_extractButton);
+
+            RefreshPreview();
+            Vector2 restoredScrollPosition = _scrollPosition;
+            _previewScrollView.schedule.Execute(() => _previewScrollView.scrollOffset = restoredScrollPosition);
+        }
+
+        // IMGUI OnGUI가 다시 그려질 때마다 미리보기를 다시 계산하던 동작을, 선택·에셋·Hierarchy·포커스
+        // 변경 시점의 갱신으로 옮긴다.
+        private void OnSelectionChange()
+        {
+            RefreshPreview();
+        }
+
+        private void OnProjectChange()
+        {
+            RefreshPreview();
+        }
+
+        private void OnHierarchyChange()
+        {
+            RefreshPreview();
+        }
+
+        private void OnFocus()
+        {
+            RefreshPreview();
+        }
+
+        private void RefreshPreview()
+        {
+            if (_previewScrollView == null)
+            {
+                return;
+            }
 
             IReadOnlyList<AnimationClip> clips = GatherSelectedClips(includeInactiveChildren);
             ImportedAnimationClipConversionMap map = ImportedAnimationClipWorkflow.LoadMap(
                 GetDerivedClipFolderPath());
             DrawPreview(clips, map);
 
-            using (new EditorGUI.DisabledScope(clips.Count == 0))
-            {
-                if (GUILayout.Button("Convert Selected Events To Channels", GUILayout.Height(34f)))
-                {
-                    Convert(clips);
-                }
-
-                if (GUILayout.Button("Extract Imported Clips And Create Overrides", GUILayout.Height(34f)))
-                {
-                    ExtractImportedClips(clips);
-                }
-            }
+            bool hasClips = clips.Count > 0;
+            _convertButton.SetEnabled(hasClips);
+            _extractButton.SetEnabled(hasClips);
         }
 
         private void ExtractImportedClips(IReadOnlyList<AnimationClip> clips)
@@ -117,27 +211,24 @@ namespace Jeomseon.Unity.Animation.Editor.Channels
             IReadOnlyList<AnimationClip> clips,
             ImportedAnimationClipConversionMap map)
         {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField($"Preview ({clips.Count} clips)", EditorStyles.boldLabel);
-            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            _previewTitle.text = $"Preview ({clips.Count} clips)";
+            _previewScrollView.Clear();
 
             foreach (AnimationClip clip in clips)
             {
                 AnimationEventChannelMigration.ValidationResult result = AnimationEventChannelMigration.Validate(clip);
-                MessageType type = result.InvalidEvents > 0
-                    ? MessageType.Error
+                HelpBoxMessageType type = result.InvalidEvents > 0
+                    ? HelpBoxMessageType.Error
                     : result.LegacyEvents > 0
-                        ? MessageType.Warning
-                        : MessageType.Info;
+                        ? HelpBoxMessageType.Warning
+                        : HelpBoxMessageType.Info;
 
                 string importedStatus = GetImportedClipStatus(clip, map);
-                EditorGUILayout.HelpBox(
+                _previewScrollView.Add(new HelpBox(
                     $"{clip.name}: conversion candidates {result.LegacyEvents}, " +
                     $"invalid channel events {result.InvalidEvents}{importedStatus}",
-                    type);
+                    type));
             }
-
-            EditorGUILayout.EndScrollView();
         }
 
         private static string GetImportedClipStatus(
