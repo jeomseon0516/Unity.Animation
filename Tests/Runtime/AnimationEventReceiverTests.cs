@@ -1,4 +1,5 @@
 using System.Collections;
+using Jeomseon.Unity.Animation;
 using Jeomseon.Unity.Animation.Channels;
 using NUnit.Framework;
 using UnityEngine;
