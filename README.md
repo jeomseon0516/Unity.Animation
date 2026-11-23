@@ -19,7 +19,7 @@ Editor 도구가 Unity 내부 릴레이 규약을 자동 설정하므로 사용�
     }
   ],
   "dependencies": {
-    "com.jeomseon.unity.animation": "0.3.1"
+    "com.jeomseon.unity.animation": "0.3.2"
   }
 }
 ```
@@ -29,7 +29,7 @@ Editor 도구가 Unity 내부 릴레이 규약을 자동 설정하므로 사용�
 Unity Package Manager의 `Install package from git URL`에 다음 주소를 사용합니다.
 
 ```text
-https://github.com/jeomseon0516/Unity.Animation.git#v0.3.1
+https://github.com/jeomseon0516/Unity.Animation.git#v0.3.2
 ```
 
 ## 권장 워크플로우
