@@ -81,7 +81,7 @@ namespace Jeomseon.Samples.Animation
     }
   ],
   "dependencies": {
-    "com.jeomseon.unity.animation": "0.3.1"
+    "com.jeomseon.unity.animation": "0.3.2"
   }
 }
 ```
@@ -89,7 +89,7 @@ namespace Jeomseon.Samples.Animation
 또는 Package Manager의 **Install package from git URL**을 사용합니다:
 
 ```text
-https://github.com/jeomseon0516/Unity.Animation.git#v0.3.1
+https://github.com/jeomseon0516/Unity.Animation.git#v0.3.2
 ```
 
 ## 설계와 동작
